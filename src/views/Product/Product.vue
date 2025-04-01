@@ -2,13 +2,13 @@
 import {onMounted} from "vue"
 import {storeToRefs} from "pinia"
 import {useProductStore} from "@/store/product"
-import ArgonPagination from "@/components/ArgonPagination.vue";
-import ArgonPaginationItem from "@/components/ArgonPaginationItem.vue";
+import ArgonPagination from "@/components/ArgonPagination.vue"
+import ArgonPaginationItem from "@/components/ArgonPaginationItem.vue"
 
 const {get} = useProductStore()
 const {destroy} = useProductStore()
 const {setProduct} = useProductStore()
-const {clearRetailer} = useProductStore()
+const {clearProduct} = useProductStore()
 const {products, pagination} = storeToRefs(useProductStore())
 
 const fetchProducts = async (page = 1) => {
@@ -34,7 +34,7 @@ onMounted(() => {
                     <div class="card-header pb-0 d-flex justify-content-between">
                         <h6 class="mb-0">List of products</h6>
 
-                        <RouterLink @click="clearRetailer" :to="{name : 'Create Product'}"
+                        <RouterLink @click="clearProduct" :to="{name : 'Create Product'}"
                                     class="btn mb-0 bg-gradient-primary btn-md">
                             <i class="fas fa-plus me-2"></i>
                             Add product

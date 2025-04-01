@@ -1,9 +1,9 @@
 <script setup>
 import ArgonInput from "@/components/ArgonInput.vue"
-import {storeToRefs} from "pinia";
-import {usePackSizeStore} from "@/store/packSize";
-import ArgonButton from "@/components/ArgonButton.vue";
-import {useRoute} from "vue-router";
+import {storeToRefs} from "pinia"
+import {usePackSizeStore} from "@/store/packSize"
+import ArgonButton from "@/components/ArgonButton.vue"
+import {useRoute} from "vue-router"
 
 const {packSize} = usePackSizeStore()
 const route = useRoute()
@@ -39,7 +39,8 @@ const {validationError} = storeToRefs(usePackSizeStore())
                                 {{ validationError }}
                             </div>
 
-                            <ArgonButton class="mt-3" @click="update(route.params.id)" variant="gradient" color="primary">
+                            <ArgonButton class="mt-3" @click="update(route.params.id)" variant="gradient"
+                                         color="primary">
                                 Save
                             </ArgonButton>
                         </div>

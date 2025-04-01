@@ -5,10 +5,12 @@ import "./assets/css/nucleo-icons.css"
 import "./assets/css/nucleo-svg.css"
 import ArgonDashboard from "./argon-dashboard"
 import {createPinia} from "pinia"
+import store from "@/store"
 
 const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
+app.use(store)
 app.use(router)
-app.use(ArgonDashboard);
+app.use(ArgonDashboard)
 app.mount("#app")

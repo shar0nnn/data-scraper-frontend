@@ -4,8 +4,8 @@ import {storeToRefs} from "pinia"
 import ArgonButton from "@/components/ArgonButton.vue"
 import {useRoute} from "vue-router"
 import {useRetailerStore} from "@/store/retailer"
-import {useCurrencyStore} from "@/store/currency";
-import {onMounted} from "vue";
+import {useCurrencyStore} from "@/store/currency"
+import {onMounted} from "vue"
 
 const {retailer} = useRetailerStore()
 const {get} = useCurrencyStore()

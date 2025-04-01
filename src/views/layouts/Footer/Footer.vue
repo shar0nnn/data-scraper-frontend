@@ -3,9 +3,9 @@
         <div class="container">
             <div class="row">
                 <div class="mx-auto mb-4 text-center col-lg-8">
-<!--                    <RouterLink :to="{name: 'Dashboard'}" class="mb-2 text-secondary me-xl-5 me-3 mb-sm-0">-->
-<!--                        Dashboard-->
-<!--                    </RouterLink>-->
+                    <RouterLink :to="{name: 'Retailers Metrics'}" class="mb-2 text-secondary me-xl-5 me-3 mb-sm-0">
+                        Retailers Metrics
+                    </RouterLink>
 
                     <RouterLink :to="{name: 'Retailers'}" class="mb-2 text-secondary me-xl-5 me-3 mb-sm-0">
                         Retailers

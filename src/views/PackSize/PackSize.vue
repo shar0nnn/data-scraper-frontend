@@ -1,7 +1,7 @@
 <script setup>
-import {usePackSizeStore} from "@/store/packSize";
-import {onMounted} from "vue";
-import {storeToRefs} from "pinia";
+import {usePackSizeStore} from "@/store/packSize"
+import {onMounted} from "vue"
+import {storeToRefs} from "pinia"
 
 const {get} = usePackSizeStore()
 const {destroy} = usePackSizeStore()

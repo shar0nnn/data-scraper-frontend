@@ -1,13 +1,13 @@
 <script setup>
-import {useStore} from "vuex";
+import {useStore} from "vuex"
 
-const store = useStore();
-const sidebarMinimize = () => store.commit("sidebarMinimize");
+const store = useStore()
+const sidebarMinimize = () => store.commit("sidebarMinimize")
 const minimizeSidebar = () => {
     if (window.innerWidth < 1200) {
-        sidebarMinimize();
+        sidebarMinimize()
     }
-};
+}
 
 defineProps({
     to: {
@@ -18,7 +18,7 @@ defineProps({
         type: String,
         required: true,
     },
-});
+})
 </script>
 <template>
     <RouterLink :to="to" class="nav-link" @click="minimizeSidebar">

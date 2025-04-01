@@ -1,20 +1,18 @@
 <script setup>
-import {computed} from "vue";
-import {useStore} from "vuex";
-import {useRoute} from "vue-router";
-import Breadcrumbs from "@/views/layouts/Header/Breadcrumbs.vue";
-import {useAuthStore} from "@/store/auth";
-import {storeToRefs} from "pinia";
+import {computed} from "vue"
+import {useRoute} from "vue-router"
+import Breadcrumbs from "@/views/layouts/Header/Breadcrumbs.vue"
+import {useAuthStore} from "@/store/auth"
+import {useStore} from "vuex"
 
-const store = useStore();
-const route = useRoute();
+const store = useStore()
+const route = useRoute()
 const {logout} = useAuthStore()
-const {token} = storeToRefs(useAuthStore())
 
 const currentRouteName = computed(() => {
-    return route.name;
+    return route.name
 })
-const minimizeSidebar = () => store.commit("sidebarMinimize");
+const minimizeSidebar = () => store.commit("sidebarMinimize")
 </script>
 <template>
     <nav class="navbar position-sticky z-index-sticky bg-dark left-auto top-2  navbar-main navbar-expand-lg px-1 mx-4
@@ -24,7 +22,7 @@ const minimizeSidebar = () => store.commit("sidebarMinimize");
 
             <div class="mt-2 collapse navbar-collapse mt-sm-0 me-md-0 me-sm-4">
                 <ul class="navbar-nav justify-content-end ms-md-auto">
-                    <li v-if="token" class="nav-item d-flex align-items-center">
+                    <li class="nav-item d-flex align-items-center">
                         <RouterLink @click="logout" to="#" class="px-0 nav-link font-weight-bold text-white">
                             <i class="ni ni-curved-next me-sm-2"></i>
                             <span class="d-sm-inline d-none text-lg">Log out</span>

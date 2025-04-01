@@ -1,8 +1,8 @@
 <script setup>
 import ArgonInput from "@/components/ArgonInput.vue"
-import {storeToRefs} from "pinia";
-import {usePackSizeStore} from "@/store/packSize";
-import ArgonButton from "@/components/ArgonButton.vue";
+import {storeToRefs} from "pinia"
+import {usePackSizeStore} from "@/store/packSize"
+import ArgonButton from "@/components/ArgonButton.vue"
 
 const {packSize} = usePackSizeStore()
 const {store} = usePackSizeStore()

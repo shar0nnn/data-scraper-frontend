@@ -15,6 +15,7 @@ import EditRetailer from "@/views/Retailer/Edit.vue"
 import Product from "@/views/Product/Product.vue"
 import CreateProduct from "@/views/Product/Create.vue"
 import EditProduct from "@/views/Product/Edit.vue"
+import Metric from "@/views/Retailer/Metric/Metric.vue"
 
 const checkIfUserIsAuthenticated = (to, from, next) => {
     const token = localStorage.getItem("token")
@@ -45,13 +46,13 @@ const routes = [
             {
                 path: "/",
                 name: "Home",
-                redirect: {name: "Retailers"},
+                redirect: {name: "Retailers Metrics"},
             },
-            // {
-            //     path: "/dashboard",
-            //     name: "Dashboard",
-            //     component: Dashboard,
-            // },
+            {
+                path: "/retailers/metrics",
+                name: "Retailers Metrics",
+                component: Metric,
+            },
 
             // -- Retailer --
             {

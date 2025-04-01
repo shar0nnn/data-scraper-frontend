@@ -1,9 +1,9 @@
 <script setup>
-import ArgonInput from "@/components/ArgonInput.vue";
-import ArgonButton from "@/components/ArgonButton.vue";
-import {useAuthStore} from "@/store/auth";
-import {reactive} from "vue";
-import {storeToRefs} from "pinia";
+import ArgonInput from "@/components/ArgonInput.vue"
+import ArgonButton from "@/components/ArgonButton.vue"
+import {useAuthStore} from "@/store/auth"
+import {reactive} from "vue"
+import {storeToRefs} from "pinia"
 
 const {validationError} = storeToRefs(useAuthStore())
 const {login} = useAuthStore()

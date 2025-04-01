@@ -1,16 +1,13 @@
 <script setup>
-import SidebarItem from "./SidebarItem.vue";
-import {computed} from "vue";
-import {useRoute} from "vue-router";
-import {storeToRefs} from "pinia";
-import {useAuthStore} from "@/store/auth";
+import SidebarItem from "./SidebarItem.vue"
+import {computed} from "vue"
+import {useRoute} from "vue-router"
 
-const route = useRoute();
-const {token} = storeToRefs(useAuthStore())
+const route = useRoute()
 
 const bgColor = computed(() => {
     switch (true) {
-        case route.path.startsWith("/dashboard"):
+        case route.path.startsWith("/retailers/metrics"):
             return "bg-primary"
         case route.path.startsWith("/retailers"):
             return "bg-success"
@@ -25,7 +22,7 @@ const bgColor = computed(() => {
         default:
             return "bg-primary"
     }
-});
+})
 </script>
 <template>
     <div :class="bgColor" class="min-height-300 position-absolute w-100"/>
@@ -42,13 +39,13 @@ const bgColor = computed(() => {
 
         <div class="collapse navbar-collapse w-auto h-auto h-100" id="sidenav-collapse-main">
             <ul class="navbar-nav">
-<!--                <li class="nav-item">-->
-<!--                    <SidebarItem :to="{name: 'Dashboard'}" navText="Dashboard">-->
-<!--                        <template v-slot:icon>-->
-<!--                            <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>-->
-<!--                        </template>-->
-<!--                    </SidebarItem>-->
-<!--                </li>-->
+                <li class="nav-item">
+                    <SidebarItem :to="{name: 'Retailers Metrics'}" navText="Retailers Metrics">
+                        <template v-slot:icon>
+                            <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
+                        </template>
+                    </SidebarItem>
+                </li>
 
                 <li class="nav-item">
                     <SidebarItem :to="{name: 'Retailers'}" navText="Retailers">
@@ -83,14 +80,6 @@ const bgColor = computed(() => {
                 </li>
 
                 <hr class="horizontal dark"/>
-
-                <li v-if="!token" class="nav-item">
-                    <SidebarItem :to="{name: 'Login'}" navText="Log in">
-                        <template v-slot:icon>
-                            <i class="ni ni-single-02 text-secondary text-sm opacity-10"></i>
-                        </template>
-                    </SidebarItem>
-                </li>
             </ul>
         </div>
     </aside>
