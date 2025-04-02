@@ -15,10 +15,6 @@ const props = defineProps({
         type: String,
         default: "",
     },
-    description: {
-        type: String,
-        default: "",
-    },
     chart: {
         type: Object,
         required: true,
@@ -87,10 +83,10 @@ watch(() => props.chart, (newChart) => {
 
 <template>
     <div class="card z-index-2 shadow">
-        <div class="pb-0 card-header mb-0">
+        <div class="pb-0 card-header mb-0 d-flex justify-content-between">
             <h6>{{ props.title }}</h6>
 
-            <p v-if="props.description" class="text-sm" v-html="props.description"/>
+            <slot name="actions"></slot>
         </div>
         <div class="p-3 card-body">
             <div class="chart">

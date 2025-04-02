@@ -8,13 +8,14 @@ import MetricLineChart from "@/views/Retailer/Metric/MetricLineChart.vue"
 const {metrics} = storeToRefs(useRetailerMetricStore())
 const {weeklyMetrics} = storeToRefs(useRetailerMetricStore())
 const {get} = useRetailerMetricStore()
+const {exportData} = useRetailerMetricStore()
 
 onMounted(() => {
     if (metrics.value.length === 0) {
-        get('metrics', '2025-03-31')
+        get('metrics', '2025-04-01')
     }
     if (weeklyMetrics.value.length === 0) {
-        get('weeklyMetrics', '2025-03-25')
+        get('weeklyMetrics', '2025-03-26')
     }
 })
 
@@ -74,7 +75,13 @@ const priceChart = computed(() => ({
                     <div class="col-12 mb-4">
                         <div class="card z-index-2 shadow mt-4">
                             <MetricLineChart id="ratingLineChart" title="Weekly Product Average Ratings"
-                                             :chart="ratingChart"/>
+                                             :chart="ratingChart">
+                                <template #actions>
+                                    <RouterLink @click="exportData" to="#" class="btn mb-0 bg-gradient-success btn-md">
+                                        <i class="fas fa-plus me-2"></i> Export
+                                    </RouterLink>
+                                </template>
+                            </MetricLineChart>
                         </div>
                     </div>
 

@@ -10,6 +10,7 @@ const {destroy} = useProductStore()
 const {setProduct} = useProductStore()
 const {clearProduct} = useProductStore()
 const {products, pagination} = storeToRefs(useProductStore())
+const {exportData} = useProductStore()
 
 const fetchProducts = async (page = 1) => {
     get(page)
@@ -34,13 +35,21 @@ onMounted(() => {
                     <div class="card-header pb-0 d-flex justify-content-between">
                         <h6 class="mb-0">List of products</h6>
 
-                        <RouterLink @click="clearProduct" :to="{name : 'Create Product'}"
-                                    class="btn mb-0 bg-gradient-primary btn-md">
-                            <i class="fas fa-plus me-2"></i>
-                            Add product
-                        </RouterLink>
-                    </div>
+                        <div>
+                            <RouterLink @click="exportData" to="#"
+                                        class="btn mb-0 bg-gradient-success btn-md me-4">
+                                <i class="fas fa-plus me-2"></i>
+                                Export
+                            </RouterLink>
 
+                            <RouterLink @click="clearProduct" :to="{name : 'Create Product'}"
+                                        class="btn mb-0 bg-gradient-primary btn-md">
+                                <i class="fas fa-plus me-2"></i>
+                                Add product
+                            </RouterLink>
+                        </div>
+
+                    </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
                             <table v-if="products" class="table align-items-center mb-0">
