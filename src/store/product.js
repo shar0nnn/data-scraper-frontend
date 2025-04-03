@@ -15,7 +15,10 @@ export const useProductStore = defineStore("productStore", {
                 pack_size_id: null,
             },
             productImages: [],
+            productsFile: null,
             validationError: null,
+            importSuccess: null,
+            importError: null,
             pagination: {
                 currentPage: 1,
                 prev: null,
@@ -135,6 +138,24 @@ export const useProductStore = defineStore("productStore", {
                     alert(error.response)
                 })
         },
+        importData() {
+            axios
+                .post("/products/import", {
+                    file: this.productsFile
+                }, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((response) => {
+                    this.importError = null
+                    this.importSuccess = response.data.message
+                })
+                .catch((error) => {
+                    this.importSuccess = null
+                    this.importError = error.response.data.message
+                })
+        },
 
         setProduct(product) {
             this.product.id = product.id
@@ -159,5 +180,13 @@ export const useProductStore = defineStore("productStore", {
         handleFileInput(event) {
             this.productImages = Array.from(event.target.files)
         },
+        handleProductsImport(event) {
+            this.productsFile = event.target.files[0]
+        },
+        clearMessages() {
+            this.validationError = null
+            this.importError = null
+            this.importSuccess = null
+        }
     },
 })

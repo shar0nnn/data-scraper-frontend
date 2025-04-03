@@ -4,6 +4,7 @@ import {storeToRefs} from "pinia"
 import {useProductStore} from "@/store/product"
 import ArgonPagination from "@/components/ArgonPagination.vue"
 import ArgonPaginationItem from "@/components/ArgonPaginationItem.vue"
+import ArgonButton from "@/components/ArgonButton.vue"
 
 const {get} = useProductStore()
 const {destroy} = useProductStore()
@@ -11,6 +12,11 @@ const {setProduct} = useProductStore()
 const {clearProduct} = useProductStore()
 const {products, pagination} = storeToRefs(useProductStore())
 const {exportData} = useProductStore()
+const {handleProductsImport} = useProductStore()
+const {importData} = useProductStore()
+const {importSuccess} = storeToRefs(useProductStore())
+const {importError} = storeToRefs(useProductStore())
+const {clearMessages} = useProductStore()
 
 const fetchProducts = async (page = 1) => {
     get(page)
@@ -35,6 +41,26 @@ onMounted(() => {
                     <div class="card-header pb-0 d-flex justify-content-between">
                         <h6 class="mb-0">List of products</h6>
 
+                        <div class="d-flex align-items-start gap-3">
+                            <!--                            <ArgonAlert v-if="importSuccess" dismissible>{{ importSuccess }}</ArgonAlert>-->
+
+                            <ArgonButton @click="importData" class="bg-dark">Import</ArgonButton>
+
+                            <div class="d-flex flex-column w-100">
+                                <input @change="handleProductsImport" type="file" class="form-control"
+                                       :class="{'is-invalid': importError, 'is-valid': importSuccess}"
+                                       @click="clearMessages">
+
+                                <div v-if="importError" class="invalid-feedback">
+                                    {{ importError }}
+                                </div>
+                                <div v-if="importSuccess" class="valid-feedback">
+                                    {{ importSuccess }}
+                                </div>
+                            </div>
+                        </div>
+
+
                         <div>
                             <RouterLink @click="exportData" to="#"
                                         class="btn mb-0 bg-gradient-success btn-md me-4">
@@ -48,7 +74,6 @@ onMounted(() => {
                                 Add product
                             </RouterLink>
                         </div>
-
                     </div>
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">

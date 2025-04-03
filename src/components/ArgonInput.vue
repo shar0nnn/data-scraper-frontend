@@ -1,5 +1,5 @@
 <script setup>
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue"])
 
 defineProps({
     size: {
@@ -46,25 +46,25 @@ defineProps({
         type: Boolean,
         default: false,
     },
-});
+})
 
 const getClasses = (size, success, error) => {
-    let sizeValue, isValidValue;
+    let sizeValue, isValidValue
 
-    sizeValue = size ? `form-control-${size}` : null;
+    sizeValue = size ? `form-control-${size}` : null
 
     if (error) {
-        isValidValue = "is-invalid";
+        isValidValue = "is-invalid"
     } else if (success) {
-        isValidValue = "is-valid";
+        isValidValue = "is-valid"
     } else {
-        isValidValue = "";
+        isValidValue = ""
     }
 
-    return `${sizeValue} ${isValidValue}`;
-};
-const getIcon = (icon) => (icon ? icon : null);
-const hasIcon = (icon) => (icon ? "input-group" : null);
+    return `${sizeValue} ${isValidValue}`
+}
+const getIcon = (icon) => (icon ? icon : null)
+const hasIcon = (icon) => (icon ? "input-group" : null)
 </script>
 <template>
     <div class="form-group">

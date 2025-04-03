@@ -20,27 +20,27 @@ defineProps({
         type: Boolean,
         default: false,
     },
-});
+})
 const getClasses = (variant, color, size, fullWidth, active) => {
-    let colorValue, sizeValue, fullWidthValue, activeValue;
+    let colorValue, sizeValue, fullWidthValue, activeValue
 
     // Setting the button variant and color
     if (variant === "gradient") {
-        colorValue = `bg-gradient-${color}`;
+        colorValue = `bg-gradient-${color}`
     } else if (variant === "outline") {
-        colorValue = `btn-outline-${color}`;
+        colorValue = `btn-outline-${color}`
     } else {
-        colorValue = `btn-${color}`;
+        colorValue = `btn-${color}`
     }
 
-    sizeValue = size ? `btn-${size}` : null;
+    sizeValue = size ? `btn-${size}` : null
 
-    fullWidthValue = fullWidth ? `w-100` : null;
+    fullWidthValue = fullWidth ? `w-100` : null
 
-    activeValue = active ? `active` : null;
+    activeValue = active ? `active` : null
 
-    return `${colorValue} ${sizeValue} ${fullWidthValue} ${activeValue}`;
-};
+    return `${colorValue} ${sizeValue} ${fullWidthValue} ${activeValue}`
+}
 </script>
 <template>
     <button
