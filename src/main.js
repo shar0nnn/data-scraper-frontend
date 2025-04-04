@@ -6,6 +6,7 @@ import "./assets/css/nucleo-svg.css"
 import ArgonDashboard from "./argon-dashboard"
 import {createPinia} from "pinia"
 import store from "@/store"
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 const app = createApp(App)
 const pinia = createPinia()

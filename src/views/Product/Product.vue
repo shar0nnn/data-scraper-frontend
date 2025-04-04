@@ -5,6 +5,8 @@ import {useProductStore} from "@/store/product"
 import ArgonPagination from "@/components/ArgonPagination.vue"
 import ArgonPaginationItem from "@/components/ArgonPaginationItem.vue"
 import ArgonButton from "@/components/ArgonButton.vue"
+import VueDatePicker from '@vuepic/vue-datepicker'
+import '@vuepic/vue-datepicker/dist/main.css'
 
 const {get} = useProductStore()
 const {destroy} = useProductStore()
@@ -12,11 +14,13 @@ const {setProduct} = useProductStore()
 const {clearProduct} = useProductStore()
 const {products, pagination} = storeToRefs(useProductStore())
 const {exportData} = useProductStore()
+const {exportScrapedData} = useProductStore()
 const {handleProductsImport} = useProductStore()
 const {importData} = useProductStore()
 const {importSuccess} = storeToRefs(useProductStore())
 const {importError} = storeToRefs(useProductStore())
 const {clearMessages} = useProductStore()
+const {dateRange} = storeToRefs(useProductStore())
 
 const fetchProducts = async (page = 1) => {
     get(page)
@@ -34,6 +38,27 @@ onMounted(() => {
 })
 </script>
 <template>
+    <div class="modal fade" id="exportSPModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Choose date range to export</h5>
+                </div>
+                <div class="modal-body">
+                    <VueDatePicker v-model="dateRange" :range="{ partialRange: false }" :enable-time-picker="false"
+                                   format="dd.MM.yyyy"/>
+                </div>
+                <div class="modal-footer">
+                    <ArgonButton class="bg-secondary" data-bs-dismiss="modal">Close</ArgonButton>
+
+                    <ArgonButton @click="exportScrapedData" class="bg-warning" :disabled="!dateRange">
+                        Export
+                    </ArgonButton>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="py-4 container-fluid">
         <div class="row">
             <div class="col-12">
@@ -42,8 +67,6 @@ onMounted(() => {
                         <h6 class="mb-0">List of products</h6>
 
                         <div class="d-flex align-items-start gap-3">
-                            <!--                            <ArgonAlert v-if="importSuccess" dismissible>{{ importSuccess }}</ArgonAlert>-->
-
                             <ArgonButton @click="importData" class="bg-dark">Import</ArgonButton>
 
                             <div class="d-flex flex-column w-100">
@@ -60,13 +83,15 @@ onMounted(() => {
                             </div>
                         </div>
 
-
                         <div>
-                            <RouterLink @click="exportData" to="#"
-                                        class="btn mb-0 bg-gradient-success btn-md me-4">
-                                <i class="fas fa-plus me-2"></i>
-                                Export
-                            </RouterLink>
+                            <ArgonButton class="bg-warning me-4" data-bs-toggle="modal"
+                                         data-bs-target="#exportSPModal">
+                                Export Scraped Products
+                            </ArgonButton>
+
+                            <ArgonButton @click="exportData" class="bg-gradient-success btn-md me-4">
+                                Export Products
+                            </ArgonButton>
 
                             <RouterLink @click="clearProduct" :to="{name : 'Create Product'}"
                                         class="btn mb-0 bg-gradient-primary btn-md">

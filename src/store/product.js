@@ -6,6 +6,11 @@ export const useProductStore = defineStore("productStore", {
     state: () => {
         return {
             router: useRouter(),
+            validationError: null,
+            importSuccess: null,
+            importError: null,
+            dateRange: null,
+
             products: null,
             product: {
                 id: null,
@@ -16,9 +21,6 @@ export const useProductStore = defineStore("productStore", {
             },
             productImages: [],
             productsFile: null,
-            validationError: null,
-            importSuccess: null,
-            importError: null,
             pagination: {
                 currentPage: 1,
                 prev: null,
@@ -97,9 +99,6 @@ export const useProductStore = defineStore("productStore", {
                 formData.append(`retailers[${index}][url]`, retailer.url)
             })
             formData.append("_method", "PATCH")
-            formData.forEach((key, value) => {
-                console.log(key, value)
-            })
 
             axios
                 .post(`products/${id}`, formData)
@@ -112,30 +111,27 @@ export const useProductStore = defineStore("productStore", {
                 })
         },
 
-        exportData() {
+        exportScrapedData() {
+            const startDate = this.dateRange[0].toISOString()
+            const endDate = this.dateRange[1].toISOString()
+
             axios
-                .get("/products/export", {responseType: "blob"})
+                .get(`/scraped-products/export?start_date=${startDate}&end_date=${endDate}`)
                 .then((response) => {
-                    const contentDisposition = response.headers["content-disposition"]
-                    let filename = "products.xlsx"
-
-                    if (contentDisposition) {
-                        const match = contentDisposition.match(/filename="?(.+?)"?$/)
-                        if (match) {
-                            filename = match[1]
-                        }
-                    }
-
-                    const url = window.URL.createObjectURL(new Blob([response.data]))
-                    const link = document.createElement("a")
-                    link.href = url
-                    link.setAttribute("download", filename)
-                    document.body.appendChild(link)
-                    link.click()
-                    link.remove()
+                    window.location.href = response.data.data
                 })
                 .catch((error) => {
-                    alert(error.response)
+                    alert(error.response.data.message)
+                })
+        },
+        exportData() {
+            axios
+                .get("/products/export")
+                .then((response) => {
+                    window.location.href = response.data.data
+                })
+                .catch((error) => {
+                    alert(error.response.data.message)
                 })
         },
         importData() {
@@ -149,11 +145,11 @@ export const useProductStore = defineStore("productStore", {
                 })
                 .then((response) => {
                     this.importError = null
-                    this.importSuccess = response.data.message
+                    this.importSuccess = response.data?.message
                 })
                 .catch((error) => {
                     this.importSuccess = null
-                    this.importError = error.response.data.message
+                    this.importError = error.response.data?.message
                 })
         },
 
