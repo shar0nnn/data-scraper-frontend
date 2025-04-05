@@ -1,6 +1,6 @@
 import axios from "axios"
 
-axios.defaults.baseURL = "http://localhost/api/"
+axios.defaults.baseURL = process.env.VUE_APP_API_URL
 axios.defaults.headers.common["Accept"] = "application/json"
 axios.interceptors.request.use((config) => {
     const token = localStorage.getItem("token")
