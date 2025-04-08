@@ -4,6 +4,7 @@ import {computed, onMounted} from "vue"
 import {useRetailerMetricStore} from "@/store/retailerMetric"
 import {storeToRefs} from "pinia"
 import MetricLineChart from "@/views/Retailer/Metric/MetricLineChart.vue"
+import ArgonButton from "@/components/ArgonButton.vue"
 
 const {metrics} = storeToRefs(useRetailerMetricStore())
 const {weeklyMetrics} = storeToRefs(useRetailerMetricStore())
@@ -77,9 +78,9 @@ const priceChart = computed(() => ({
                             <MetricLineChart id="ratingLineChart" title="Weekly Product Average Ratings"
                                              :chart="ratingChart">
                                 <template #actions>
-                                    <RouterLink @click="exportData" to="#" class="btn mb-0 bg-gradient-success btn-md">
+                                    <ArgonButton @click="exportData" class="bg-gradient-success">
                                         <i class="fas fa-plus me-2"></i> Export
-                                    </RouterLink>
+                                    </ArgonButton>
                                 </template>
                             </MetricLineChart>
                         </div>

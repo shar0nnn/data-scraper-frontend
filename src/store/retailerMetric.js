@@ -22,28 +22,12 @@ export const useRetailerMetricStore = defineStore("retailerMetricStore", {
 
         exportData() {
             axios
-                .get("/retailers/metrics/export?start_date=2025-04-01", {responseType: "blob"})
+                .get("/retailers/metrics/export?start_date=2024-04-05&end_date=2024-05-05")
                 .then((response) => {
-                    const contentDisposition = response.headers["content-disposition"]
-                    let filename = "retailers-metrics.xlsx"
-
-                    if (contentDisposition) {
-                        const match = contentDisposition.match(/filename="?(.+?)"?$/)
-                        if (match) {
-                            filename = match[1]
-                        }
-                    }
-
-                    const url = window.URL.createObjectURL(new Blob([response.data]))
-                    const link = document.createElement("a")
-                    link.href = url
-                    link.setAttribute("download", filename)
-                    document.body.appendChild(link)
-                    link.click()
-                    link.remove()
+                    window.location.href = response.data.data
                 })
                 .catch((error) => {
-                    alert(error.response)
+                    alert(error.response.data.message)
                 })
         },
     },
