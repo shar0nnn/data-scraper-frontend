@@ -40,6 +40,14 @@ const bgColor = computed(() => {
         <div class="collapse navbar-collapse w-auto h-auto h-100" id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
+                    <SidebarItem :to="{name: 'Users'}" navText="Users">
+                        <template v-slot:icon>
+                            <i class="ni ni-settings text-primary text-sm opacity-10"></i>
+                        </template>
+                    </SidebarItem>
+                </li>
+
+                <li class="nav-item">
                     <SidebarItem :to="{name: 'Retailers Metrics'}" navText="Retailers Metrics">
                         <template v-slot:icon>
                             <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>

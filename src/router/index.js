@@ -16,6 +16,9 @@ import Product from "@/views/Product/Product.vue"
 import CreateProduct from "@/views/Product/Create.vue"
 import EditProduct from "@/views/Product/Edit.vue"
 import Metric from "@/views/Retailer/Metric/Metric.vue"
+import User from "@/views/User/User.vue"
+import CreateUser from "@/views/User/Create.vue"
+import EditUser from "@/views/User/Edit.vue"
 
 const checkIfUserIsAuthenticated = (to, from, next) => {
     const token = localStorage.getItem("token")
@@ -53,6 +56,24 @@ const routes = [
                 name: "Retailers Metrics",
                 component: Metric,
             },
+
+            // -- User --
+            {
+                path: "/users",
+                name: "Users",
+                component: User,
+            },
+            {
+                path: "/users/create",
+                name: "Create User",
+                component: CreateUser,
+            },
+            {
+                path: "/users/:id/edit",
+                name: "Edit User",
+                component: EditUser,
+            },
+            // ----
 
             // -- Retailer --
             {

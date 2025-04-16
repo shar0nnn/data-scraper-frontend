@@ -1,13 +1,12 @@
 <script setup>
 import {onMounted} from "vue"
 import {storeToRefs} from "pinia"
-import {useCurrencyStore} from "@/store/currency"
+import {useUserStore} from "@/store/user"
 
-const {get} = useCurrencyStore()
-const {destroy} = useCurrencyStore()
-const {setCurrency} = useCurrencyStore()
-const {clearCurrency} = useCurrencyStore()
-const {currencies} = storeToRefs(useCurrencyStore())
+const {get} = useUserStore()
+const {destroy} = useUserStore()
+const {clearUser} = useUserStore()
+const {users} = storeToRefs(useUserStore())
 
 onMounted(() => {
     get()
@@ -19,67 +18,73 @@ onMounted(() => {
             <div class="col-12">
                 <div class="card">
                     <div class="card-header pb-0 d-flex justify-content-between">
-                        <h6 class="mb-0">List of currencies</h6>
+                        <h6 class="mb-0">List of users</h6>
 
-                        <RouterLink @click="clearCurrency" :to="{name : 'Create Currency'}"
+                        <RouterLink @click="clearUser" :to="{name : 'Create User'}"
                                     class="btn mb-0 bg-gradient-primary btn-md">
                             <i class="fas fa-plus me-2"></i>
-                            Add currency
+                            Add user
                         </RouterLink>
                     </div>
 
                     <div class="card-body px-0 pt-0 pb-2">
                         <div class="table-responsive p-0">
-                            <table v-if="currencies" class="table align-items-center mb-0">
+                            <table v-if="users" class="table align-items-center mb-0">
                                 <thead>
                                 <tr>
-                                    <th class="text-uppercase text-warning text-sm font-weight-bolder opacity-7">
+                                    <th class="text-uppercase text-primary text-sm font-weight-bolder opacity-7">
                                         ID
                                     </th>
-                                    <th class="text-uppercase text-warning text-sm font-weight-bolder opacity-7 ps-2">
-                                        Code
+                                    <th class="text-uppercase text-primary text-sm font-weight-bolder opacity-7 ps-2">
+                                        Name
                                     </th>
-                                    <th class="text-uppercase text-warning text-sm font-weight-bolder opacity-7 ps-2">
-                                        Description
+                                    <th class="text-uppercase text-primary text-sm font-weight-bolder opacity-7 ps-2">
+                                        Email
                                     </th>
-                                    <th class="text-uppercase text-warning text-sm font-weight-bolder opacity-7 ps-2">
-                                        Symbol
+                                    <th class="text-uppercase text-primary text-sm font-weight-bolder opacity-7 ps-2">
+                                        Location
                                     </th>
-                                    <th class="text-uppercase text-warning text-sm font-weight-bolder opacity-7 ps-2">
+                                    <th class="text-uppercase text-primary text-sm font-weight-bolder opacity-7 ps-2">
+                                        Role
+                                    </th>
+                                    <th class="text-uppercase text-primary text-sm font-weight-bolder opacity-7 ps-2">
                                         Actions
                                     </th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr v-for="currency in currencies" :key="currency.id">
+                                <tr v-for="user in users" :key="user.id">
                                     <td>
                                         <div class="d-flex px-3 py-1">
-                                            <h6 class="mb-0 text-sm">{{ currency.id }}</h6>
+                                            <h6 class="mb-0 text-sm">{{ user.id }}</h6>
                                         </div>
                                     </td>
 
                                     <td>
-                                        <h6 class="mb-0 text-sm">{{ currency.code }}</h6>
+                                        <h6 class="mb-0 text-sm">{{ user.name }}</h6>
                                     </td>
 
                                     <td>
-                                        <h6 class="mb-0 text-sm">{{ currency.description }}</h6>
+                                        <h6 class="mb-0 text-sm">{{ user.email }}</h6>
                                     </td>
 
                                     <td>
-                                        <h6 class="mb-0 text-sm">{{ currency.symbol }}</h6>
+                                        <h6 class="mb-0 text-sm">{{ user.location?.name }}</h6>
+                                    </td>
+
+                                    <td>
+                                        <h6 class="mb-0 text-sm">{{ user.role?.name }}</h6>
                                     </td>
 
                                     <td class="align-middle">
-                                        <RouterLink :to="{name: 'Edit Currency', params: {id: currency.id}}"
-                                                    @click="setCurrency(currency)"
+                                        <RouterLink :to="{name: 'Edit User', params: {id: user.id}}"
                                                     class="btn btn-link text-dark ps-1 pe-3 mb-0">
                                             <i class="fas fa-pencil-alt text-dark me-1" aria-hidden="true"></i>
                                             Edit
                                         </RouterLink>
 
-                                        <RouterLink @click="destroy(currency.id)" to="#"
+                                        <RouterLink @click="destroy(user.id)" to="#"
                                                     class="btn btn-link text-danger text-gradient px-2 mb-0">
                                             <i class="far fa-trash-alt me-1" aria-hidden="true"></i>
                                             Delete

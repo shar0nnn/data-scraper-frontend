@@ -7,11 +7,22 @@ export const useUserStore = defineStore("userStore", {
         return {
             router: useRouter(),
             users: null,
+            roles: null,
+            locations: null,
             user: {
                 id: null,
                 name: null,
                 email: null,
                 password: null,
+                location: {
+                    id: null,
+                    name: null,
+                },
+                role: {
+                    id: null,
+                    name: null,
+                },
+                retailers: [],
             },
             validationError: null,
         }
@@ -29,14 +40,17 @@ export const useUserStore = defineStore("userStore", {
         },
         store() {
             axios
-                .post("currencies", {
-                    code: this.currency.code,
-                    description: this.currency.description,
-                    symbol: this.currency.symbol,
+                .post("users", {
+                    name: this.user.name,
+                    email: this.user.email,
+                    password: this.user.password,
+                    role_id: this.user.role.id,
+                    location_id: this.user.location.id,
+                    retailers: this.user.retailers,
                 })
                 .then(() => {
-                    this.clearCurrency()
-                    this.router.push({name: "Currencies"})
+                    this.clearUser()
+                    this.router.push({name: "Users"})
                 })
                 .catch((error) => {
                     this.validationError = error.response.data.message
@@ -45,10 +59,10 @@ export const useUserStore = defineStore("userStore", {
         destroy(id) {
             if (confirm("Are you sure you want to delete?")) {
                 axios
-                    .delete(`currencies/${id}`)
+                    .delete(`users/${id}`)
                     .then(() => {
                         this.get()
-                        this.clearCurrency()
+                        this.clearUser()
                     })
                     .catch((error) => {
                         alert(error.response.data.message)
@@ -57,27 +71,89 @@ export const useUserStore = defineStore("userStore", {
         },
         update(id) {
             axios
-                .patch(`currencies/${id}`, {
-                    code: this.currency.code,
-                    description: this.currency.description,
-                    symbol: this.currency.symbol,
+                .patch(`users/${id}`, {
+                    name: this.user.name,
+                    email: this.user.email,
+                    role_id: this.user.role.id,
+                    location_id: this.user.location.id,
+                    retailers: this.user.retailers,
                 })
                 .then(() => {
-                    this.clearCurrency()
-                    this.router.push({name: "Currencies"})
+                    this.clearUser()
+                    this.router.push({name: "Users"})
                 })
                 .catch((error) => {
                     this.validationError = error.response.data.message
                 })
         },
 
-        setCurrency(currency) {
-            this.currency = currency
-            this.validationError = null
+        getRoles() {
+            axios
+                .get("roles")
+                .then((response) => {
+                    this.roles = response.data.data
+                })
+                .catch((error) => {
+                    alert(error.response.data.message)
+                })
         },
-        clearCurrency() {
-            this.currency = {id: null, code: null, description: null, symbol: null}
+        getLocations() {
+            axios
+                .get("locations")
+                .then((response) => {
+                    this.locations = response.data.data
+                })
+                .catch((error) => {
+                    alert(error.response.data.message)
+                })
+        },
+
+        getUser(id) {
+            axios
+                .get(`users/${id}`)
+                .then((response) => {
+                    const data = response.data.data
+
+                    this.user.id = data.id
+                    this.user.name = data.name
+                    this.user.email = data.email
+
+                    this.user.location = {
+                        id: data.location?.id ?? null,
+                        name: data.location?.name ?? null
+                    }
+
+                    this.user.role = {
+                        id: data.role.id,
+                        name: data.role.name
+                    }
+
+                    this.user.retailers = data.retailers.map(r => r.id)
+
+                    this.validationError = null
+                })
+                .catch((error) => {
+                    alert(error.response.data.message)
+                })
+        },
+        clearUser() {
+            this.user = {
+                id: null,
+                name: null,
+                email: null,
+                password: null,
+                location: {
+                    id: null,
+                    name: null,
+                },
+                role: {
+                    id: null,
+                    name: null,
+                },
+                retailers: []
+            }
             this.validationError = null
         }
+
     },
 })
