@@ -1,9 +1,13 @@
 <script setup>
 import SidebarItem from "./SidebarItem.vue"
-import {computed} from "vue"
+import {computed, onBeforeMount} from "vue"
 import {useRoute} from "vue-router"
+import {useAuthStore} from "@/store/auth"
+import {storeToRefs} from "pinia"
 
 const route = useRoute()
+const {checkIfUserIsAdmin} = useAuthStore()
+const {userIsAdmin} = storeToRefs(useAuthStore())
 
 const bgColor = computed(() => {
     switch (true) {
@@ -23,6 +27,10 @@ const bgColor = computed(() => {
             return "bg-primary"
     }
 })
+
+onBeforeMount(() => {
+    checkIfUserIsAdmin()
+})
 </script>
 <template>
     <div :class="bgColor" class="min-height-300 position-absolute w-100"/>
@@ -39,23 +47,15 @@ const bgColor = computed(() => {
 
         <div class="collapse navbar-collapse w-auto h-auto h-100" id="sidenav-collapse-main">
             <ul class="navbar-nav">
-                <li class="nav-item">
+                <li v-if="userIsAdmin" class="nav-item">
                     <SidebarItem :to="{name: 'Users'}" navText="Users">
                         <template v-slot:icon>
-                            <i class="ni ni-settings text-primary text-sm opacity-10"></i>
+                            <i class="ni ni-single-02 text-primary text-sm opacity-10"></i>
                         </template>
                     </SidebarItem>
                 </li>
 
-                <li class="nav-item">
-                    <SidebarItem :to="{name: 'Retailers Metrics'}" navText="Retailers Metrics">
-                        <template v-slot:icon>
-                            <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
-                        </template>
-                    </SidebarItem>
-                </li>
-
-                <li class="nav-item">
+                <li v-if="userIsAdmin" class="nav-item">
                     <SidebarItem :to="{name: 'Retailers'}" navText="Retailers">
                         <template v-slot:icon>
                             <i class="ni ni-shop text-success text-sm opacity-10"></i>
@@ -63,15 +63,7 @@ const bgColor = computed(() => {
                     </SidebarItem>
                 </li>
 
-                <li class="nav-item">
-                    <SidebarItem :to="{name: 'Products'}" navText="Products">
-                        <template v-slot:icon>
-                            <i class="ni ni-basket text-info text-sm opacity-10"></i>
-                        </template>
-                    </SidebarItem>
-                </li>
-
-                <li class="nav-item">
+                <li v-if="userIsAdmin" class="nav-item">
                     <SidebarItem :to="{name: 'Currencies'}" navText="Currencies">
                         <template v-slot:icon>
                             <i class="ni ni-money-coins text-warning text-sm opacity-10"></i>
@@ -79,7 +71,23 @@ const bgColor = computed(() => {
                     </SidebarItem>
                 </li>
 
-                <li class="nav-item">
+                <li v-if="!userIsAdmin" class="nav-item">
+                    <SidebarItem :to="{name: 'Retailers Metrics'}" navText="Retailers Metrics">
+                        <template v-slot:icon>
+                            <i class="ni ni-chart-bar-32 text-primary text-sm opacity-10"></i>
+                        </template>
+                    </SidebarItem>
+                </li>
+
+                <li v-if="!userIsAdmin" class="nav-item">
+                    <SidebarItem :to="{name: 'Products'}" navText="Products">
+                        <template v-slot:icon>
+                            <i class="ni ni-basket text-info text-sm opacity-10"></i>
+                        </template>
+                    </SidebarItem>
+                </li>
+
+                <li v-if="!userIsAdmin" class="nav-item">
                     <SidebarItem :to="{name: 'Pack Sizes'}" navText="Pack sizes">
                         <template v-slot:icon>
                             <i class="ni ni-app text-warning text-sm opacity-10"></i>
