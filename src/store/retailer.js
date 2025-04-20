@@ -94,5 +94,16 @@ export const useRetailerStore = defineStore("retailerStore", {
         handleFileInput(event) {
             this.retailer.logo = event.target.files[0]
         },
+
+        getUserRetailers() {
+            axios
+                .get("user-retailers")
+                .then((response) => {
+                    this.retailers = response.data.data
+                })
+                .catch((error) => {
+                    alert(error.response.data.message)
+                })
+        },
     },
 })

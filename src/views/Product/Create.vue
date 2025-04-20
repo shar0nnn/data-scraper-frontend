@@ -11,7 +11,7 @@ const {product} = useProductStore()
 const {store} = useProductStore()
 const {validationError} = storeToRefs(useProductStore())
 const {get: getPackSizes} = usePackSizeStore()
-const {get: getRetailers} = useRetailerStore()
+const {getUserRetailers} = useRetailerStore()
 const {packSizes} = storeToRefs(usePackSizeStore())
 const {retailers} = storeToRefs(useRetailerStore())
 const {handleFileInput} = useProductStore()
@@ -33,7 +33,7 @@ const removeRetailer = (index) => {
 }
 
 onMounted(() => {
-    getRetailers()
+    getUserRetailers()
     getPackSizes()
 })
 </script>

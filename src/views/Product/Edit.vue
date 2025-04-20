@@ -9,7 +9,7 @@ import {usePackSizeStore} from "@/store/packSize"
 import {useRetailerStore} from "@/store/retailer"
 
 const {get: getPackSizes} = usePackSizeStore()
-const {get: getRetailers} = useRetailerStore()
+const {getUserRetailers} = useRetailerStore()
 const {product} = useProductStore()
 const {packSizes} = storeToRefs(usePackSizeStore())
 const route = useRoute()
@@ -35,7 +35,7 @@ const removeRetailer = (index) => {
 }
 
 onMounted(() => {
-    getRetailers()
+    getUserRetailers()
     getPackSizes()
 
     // Find correct pack size id by it`s name and set to product.pack_size_id
