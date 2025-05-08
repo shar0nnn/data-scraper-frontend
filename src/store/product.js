@@ -10,7 +10,8 @@ export const useProductStore = defineStore("productStore", {
             importSuccess: null,
             importError: null,
             dateRange: null,
-
+            retailerIds: [],
+            packSizeIds: [],
             products: null,
             product: {
                 id: null,
@@ -30,9 +31,14 @@ export const useProductStore = defineStore("productStore", {
         }
     },
     actions: {
-        get(page = 1) {
+        get(page) {
+            const params = new URLSearchParams()
+            params.append('retailer_ids', this.retailerIds.join(','))
+            params.append('pack_size_ids', this.packSizeIds.join(','))
+            params.append('page', page)
+
             axios
-                .get(`products?page=${page}`)
+                .get(`products?${params.toString()}`)
                 .then((response) => {
                     this.products = response.data.data
                     this.pagination = {
@@ -54,7 +60,7 @@ export const useProductStore = defineStore("productStore", {
                 }
             })
             this.productImages.forEach((file) => {
-                formData.append('images[]', file)
+                formData.append("images[]", file)
             })
             selectedRetailers.forEach((retailer, index) => {
                 formData.append(`retailers[${index}][id]`, retailer.retailer_id)
@@ -92,7 +98,7 @@ export const useProductStore = defineStore("productStore", {
                 }
             })
             this.productImages?.forEach((file) => {
-                formData.append('images[]', file)
+                formData.append("images[]", file)
             })
             selectedRetailers?.forEach((retailer, index) => {
                 formData.append(`retailers[${index}][id]`, retailer.retailer_id)
