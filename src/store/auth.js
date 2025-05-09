@@ -23,7 +23,7 @@ export const useAuthStore = defineStore("authStore", {
                     this.router.push({name: "Home"})
                 })
                 .catch((error) => {
-                    this.validationError = error.response.data.message
+                    this.validationError = error.response?.data.message ?? 'Something went wrong, please try again later.'
                 })
         },
 

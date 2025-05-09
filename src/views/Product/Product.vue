@@ -5,22 +5,43 @@ import {useProductStore} from "@/store/product"
 import ArgonPagination from "@/components/ArgonPagination.vue"
 import ArgonPaginationItem from "@/components/ArgonPaginationItem.vue"
 import ArgonButton from "@/components/ArgonButton.vue"
-import VueDatePicker from '@vuepic/vue-datepicker'
-import '@vuepic/vue-datepicker/dist/main.css'
+import VueDatePicker from "@vuepic/vue-datepicker"
+import "@vuepic/vue-datepicker/dist/main.css"
+import {useRetailerStore} from "@/store/retailer"
+import {usePackSizeStore} from "@/store/packSize"
+import ArgonInput from "@/components/ArgonInput.vue"
 
-const {get} = useProductStore()
-const {destroy} = useProductStore()
-const {setProduct} = useProductStore()
-const {clearProduct} = useProductStore()
-const {products, pagination} = storeToRefs(useProductStore())
-const {exportData} = useProductStore()
-const {exportScrapedData} = useProductStore()
-const {handleProductsImport} = useProductStore()
-const {importData} = useProductStore()
-const {importSuccess} = storeToRefs(useProductStore())
-const {importError} = storeToRefs(useProductStore())
-const {clearMessages} = useProductStore()
-const {dateRange} = storeToRefs(useProductStore())
+const productStore = useProductStore()
+const {
+    get,
+    destroy,
+    setProduct,
+    clearProduct,
+    exportProducts,
+    exportScrapedProducts,
+    handleProductsImport,
+    importProducts,
+    clearMessages
+} = productStore
+
+const {
+    products,
+    pagination,
+    importSuccess,
+    importError,
+    dateRange,
+    retailerIds,
+    packSizeIds,
+    search
+} = storeToRefs(productStore)
+
+const retailerStore = useRetailerStore()
+const {getUserRetailers} = retailerStore
+const {retailers} = storeToRefs(retailerStore)
+
+const packSizeStore = usePackSizeStore()
+const {get: getPackSizes} = packSizeStore
+const {packSizes} = storeToRefs(packSizeStore)
 
 const fetchProducts = async (page = 1) => {
     get(page)
@@ -38,11 +59,63 @@ onMounted(() => {
 })
 </script>
 <template>
+    <div class="modal fade" id="filterRetailers" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose retailers</h5>
+                </div>
+                <div class="modal-body">
+                    <div v-for="retailer in retailers" class="form-check" :key="retailer.id">
+                        <input class="form-check-input" type="checkbox" :value="retailer.id"
+                               v-model="retailerIds">
+                        <label class="form-check-label">
+                            {{ retailer.title }}
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <ArgonButton class="bg-secondary" data-bs-dismiss="modal">Close</ArgonButton>
+
+                    <ArgonButton @click="get" class="bg-primary" data-bs-dismiss="modal">
+                        Filter
+                    </ArgonButton>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="filterPackSizes" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Choose pack sizes</h5>
+                </div>
+                <div class="modal-body">
+                    <div v-for="packSize in packSizes" class="form-check" :key="packSize.id">
+                        <input class="form-check-input" type="checkbox" :value="packSize.id"
+                               v-model="packSizeIds">
+                        <label class="form-check-label">
+                            {{ packSize.name }}
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <ArgonButton class="bg-secondary" data-bs-dismiss="modal">Close</ArgonButton>
+
+                    <ArgonButton @click="get" class="bg-primary" data-bs-dismiss="modal">
+                        Filter
+                    </ArgonButton>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="exportSPModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Choose date range to export</h5>
+                    <h5 class="modal-title">Choose date range to export</h5>
                 </div>
                 <div class="modal-body">
                     <VueDatePicker v-model="dateRange" :range="{ partialRange: false }" :enable-time-picker="false"
@@ -51,7 +124,7 @@ onMounted(() => {
                 <div class="modal-footer">
                     <ArgonButton class="bg-secondary" data-bs-dismiss="modal">Close</ArgonButton>
 
-                    <ArgonButton @click="exportScrapedData" class="bg-warning" :disabled="!dateRange">
+                    <ArgonButton @click="exportScrapedProducts" class="bg-warning" :disabled="!dateRange">
                         Export
                     </ArgonButton>
                 </div>
@@ -60,6 +133,28 @@ onMounted(() => {
     </div>
 
     <div class="py-4 container-fluid">
+        <div class="row mb-3">
+            <div class="col-12 d-flex align-items-stretch gap-4">
+                <ArgonButton @click="getUserRetailers" class="bg-primary" data-bs-toggle="modal"
+                             data-bs-target="#filterRetailers">
+                    Filter By Retailers
+                </ArgonButton>
+
+                <ArgonButton @click="getPackSizes" class="bg-primary" data-bs-toggle="modal"
+                             data-bs-target="#filterPackSizes">
+                    Filter By Pack Sizes
+                </ArgonButton>
+
+                <div class="col-4 d-flex align-items-stretch">
+                    <ArgonInput v-model="search" placeholder="title, description, manufacturer part number..."
+                                class="w-100 mb-0"/>
+                    <ArgonButton @click="get" class="bg-primary">
+                        Search
+                    </ArgonButton>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -67,7 +162,7 @@ onMounted(() => {
                         <h6 class="mb-0">List of products</h6>
 
                         <div class="d-flex align-items-start gap-3">
-                            <ArgonButton @click="importData" class="bg-dark">Import</ArgonButton>
+                            <ArgonButton @click="importProducts" class="bg-dark">Import</ArgonButton>
 
                             <div class="d-flex flex-column w-100">
                                 <input @change="handleProductsImport" type="file" class="form-control"
@@ -89,7 +184,7 @@ onMounted(() => {
                                 Export Scraped Products
                             </ArgonButton>
 
-                            <ArgonButton @click="exportData" class="bg-gradient-success btn-md me-4">
+                            <ArgonButton @click="exportProducts" class="bg-gradient-success btn-md me-4">
                                 Export Products
                             </ArgonButton>
 
@@ -141,7 +236,7 @@ onMounted(() => {
                                     <td>
                                         <h6 class="mb-0 text-sm">
                                             {{
-                                                product.description ? product.description.substring(0, 70) + '...' : ''
+                                                product.description ? product.description.substring(0, 70) + "..." : ""
                                             }}
                                         </h6>
                                     </td>
