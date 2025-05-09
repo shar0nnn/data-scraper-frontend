@@ -9,6 +9,7 @@ import VueDatePicker from "@vuepic/vue-datepicker"
 import "@vuepic/vue-datepicker/dist/main.css"
 import {useRetailerStore} from "@/store/retailer"
 import {usePackSizeStore} from "@/store/packSize"
+import ArgonInput from "@/components/ArgonInput.vue"
 
 const productStore = useProductStore()
 const {
@@ -30,7 +31,8 @@ const {
     importError,
     dateRange,
     retailerIds,
-    packSizeIds
+    packSizeIds,
+    search
 } = storeToRefs(productStore)
 
 const retailerStore = useRetailerStore()
@@ -131,17 +133,25 @@ onMounted(() => {
     </div>
 
     <div class="py-4 container-fluid">
-        <div class="row mb-2">
-            <div class="col-12">
-                <ArgonButton @click="getUserRetailers" class="bg-primary me-4" data-bs-toggle="modal"
+        <div class="row mb-3">
+            <div class="col-12 d-flex align-items-stretch gap-4">
+                <ArgonButton @click="getUserRetailers" class="bg-primary" data-bs-toggle="modal"
                              data-bs-target="#filterRetailers">
                     Filter By Retailers
                 </ArgonButton>
 
-                <ArgonButton @click="getPackSizes" class="bg-primary me-4" data-bs-toggle="modal"
+                <ArgonButton @click="getPackSizes" class="bg-primary" data-bs-toggle="modal"
                              data-bs-target="#filterPackSizes">
                     Filter By Pack Sizes
                 </ArgonButton>
+
+                <div class="col-4 d-flex align-items-stretch">
+                    <ArgonInput v-model="search" placeholder="title, description, manufacturer part number..."
+                                class="w-100 mb-0"/>
+                    <ArgonButton @click="get" class="bg-primary">
+                        Search
+                    </ArgonButton>
+                </div>
             </div>
         </div>
 
