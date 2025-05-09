@@ -16,10 +16,10 @@ const {
     destroy,
     setProduct,
     clearProduct,
-    exportData,
-    exportScrapedData,
+    exportProducts,
+    exportScrapedProducts,
     handleProductsImport,
-    importData,
+    importProducts,
     clearMessages
 } = productStore
 
@@ -122,7 +122,7 @@ onMounted(() => {
                 <div class="modal-footer">
                     <ArgonButton class="bg-secondary" data-bs-dismiss="modal">Close</ArgonButton>
 
-                    <ArgonButton @click="exportScrapedData" class="bg-warning" :disabled="!dateRange">
+                    <ArgonButton @click="exportScrapedProducts" class="bg-warning" :disabled="!dateRange">
                         Export
                     </ArgonButton>
                 </div>
@@ -152,7 +152,7 @@ onMounted(() => {
                         <h6 class="mb-0">List of products</h6>
 
                         <div class="d-flex align-items-start gap-3">
-                            <ArgonButton @click="importData" class="bg-dark">Import</ArgonButton>
+                            <ArgonButton @click="importProducts" class="bg-dark">Import</ArgonButton>
 
                             <div class="d-flex flex-column w-100">
                                 <input @change="handleProductsImport" type="file" class="form-control"
@@ -174,7 +174,7 @@ onMounted(() => {
                                 Export Scraped Products
                             </ArgonButton>
 
-                            <ArgonButton @click="exportData" class="bg-gradient-success btn-md me-4">
+                            <ArgonButton @click="exportProducts" class="bg-gradient-success btn-md me-4">
                                 Export Products
                             </ArgonButton>
 

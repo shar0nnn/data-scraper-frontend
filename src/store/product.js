@@ -33,9 +33,9 @@ export const useProductStore = defineStore("productStore", {
     actions: {
         get(page) {
             const params = new URLSearchParams()
-            params.append('retailer_ids', this.retailerIds.join(','))
-            params.append('pack_size_ids', this.packSizeIds.join(','))
-            params.append('page', page)
+            params.append("retailer_ids", this.retailerIds.join(","))
+            params.append("pack_size_ids", this.packSizeIds.join(","))
+            params.append("page", page)
 
             axios
                 .get(`products?${params.toString()}`)
@@ -117,7 +117,7 @@ export const useProductStore = defineStore("productStore", {
                 })
         },
 
-        exportScrapedData() {
+        exportScrapedProducts() {
             const startDate = this.dateRange[0].toISOString()
             const endDate = this.dateRange[1].toISOString()
 
@@ -130,9 +130,13 @@ export const useProductStore = defineStore("productStore", {
                     alert(error.response.data.message)
                 })
         },
-        exportData() {
+        exportProducts() {
+            const params = new URLSearchParams()
+            params.append("retailer_ids", this.retailerIds.join(","))
+            params.append("pack_size_ids", this.packSizeIds.join(","))
+
             axios
-                .get("/products/export")
+                .get(`/products/export?${params.toString()}`)
                 .then((response) => {
                     window.location.href = response.data.data
                 })
@@ -140,7 +144,7 @@ export const useProductStore = defineStore("productStore", {
                     alert(error.response.data.message)
                 })
         },
-        importData() {
+        importProducts() {
             axios
                 .post("/products/import", {
                     file: this.productsFile
